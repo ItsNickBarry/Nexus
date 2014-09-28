@@ -1,0 +1,8 @@
+name: Nexus
+version: 0.1
+description: Nexus block protection
+main: com.github.itsnickbarry.nexus.NexusMain
+
+commands:
+  nexus:
+    aliases: [n]
