@@ -6,14 +6,12 @@ import org.bukkit.block.Block;
 
 public class Nexus {
 
-    //static int count = 0;
-
     private final int id;
     
     private final int x, y, z;
     private final UUID worldUID;
     
-    private int power, spread;
+    private int power, spread; //these must not be allowed to = 0
 
     private int effectiveRadius; // This value needs to be stored here and updated regularly
 
@@ -30,19 +28,6 @@ public class Nexus {
         this.spread = spread;
         this.calculateEffectiveRadius();
     }
-    
-    /*
-    public Nexus(int power, int spread, int x, int y, int z) {
-        this.id = count++;
-        this.power = power;
-        this.spread = spread;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-
-        this.calculateEffectiveRadius();
-    }
-    */
 
     public int getEffectiveRadius() {
         return this.effectiveRadius;
@@ -71,10 +56,12 @@ public class Nexus {
     public int getZ() {
         return this.z;
     }
+    
+    public UUID getWorldUID() {
+        return this.worldUID;
+    }
 
-    public void calculateEffectiveRadius() {
-        // TODO calculate how many blocks away the nexus still has a power >=
-        // minPower
+    public void calculateEffectiveRadius(){
         this.effectiveRadius = (int) Math.sqrt(-2 * Math.pow(this.spread, 2) * Math.log((NexusUtil.minPower * this.spread) / this.power));
     }
 

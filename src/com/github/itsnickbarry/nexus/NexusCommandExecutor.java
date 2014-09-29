@@ -7,10 +7,15 @@ import org.bukkit.command.CommandSender;
 public class NexusCommandExecutor implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender arg0, Command arg1, String arg2,
-            String[] arg3) {
-        // TODO Auto-generated method stub
+    public boolean onCommand(CommandSender sender, Command command,
+            String label, String[] args) {
+
+        /*
+         * Group commands: ...
+         * 
+         * show borders (of currently occupied nexus)
+         */
+
         return false;
     }
-
 }
