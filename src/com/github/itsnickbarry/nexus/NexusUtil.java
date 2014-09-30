@@ -14,7 +14,7 @@ public class NexusUtil {
     static int minPower = 1;
     static int initialPower = 100;
     static int initialSpread = 10;
-    static boolean useSpheres = false;
+    static boolean useSpheres = true;
 
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list
 
@@ -31,10 +31,10 @@ public class NexusUtil {
 
         candidates.addAll(((TreeSet<Nexus>) xmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) xmin).headSet(point, true));
-        // System.out.println("Within X range: " + candidates.size());
+         System.out.println("Within X range: " + candidates.size());
         candidates.retainAll(((TreeSet<Nexus>) zmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) zmin).headSet(point, true));
-        // System.out.println("Within Z range: " + candidates.size());
+         System.out.println("Within Z range: " + candidates.size());
 
         double bestPower = minPower;
         Nexus bestNexus = null;

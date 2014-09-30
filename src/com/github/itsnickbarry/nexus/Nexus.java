@@ -70,19 +70,8 @@ public class Nexus {
     }
 
     public void calculateEffectiveRadius(){
-        this.effectiveRadius = (int) Math.sqrt(-2 * Math.pow(this.spread, 2) * Math.log((NexusUtil.minPower * this.spread) / this.power));
+        this.effectiveRadius = (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.minPower * (double)this.spread) / (double)this.power));
     }
-
-//    public double powerAt(int x, int y, int z) {
-//
-//        if (!NexusUtil.useSpheres) {
-//            y = this.y;
-//        }
-//
-//        double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
-//
-//        return NexusUtil.formula(distance, this.power, this.spread);
-//    }
     
     public double powerAt(Block block) {
         int x = block.getX();

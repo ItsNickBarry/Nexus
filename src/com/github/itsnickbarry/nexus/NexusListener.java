@@ -30,7 +30,7 @@ public class NexusListener implements Listener {
     public void onBlockBreak(BlockBreakEvent e) {
 //        long start = System.currentTimeMillis();
         Block block = e.getBlock();
-        Nexus owner = NexusUtil.determineBlockOwner2(block);
+        Nexus owner = NexusUtil.determineBlockOwner(block);
         if (owner != null) {
             e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
         } else {
@@ -72,7 +72,7 @@ public class NexusListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
-        Nexus owner = NexusUtil.determineBlockOwner2(block);
+        Nexus owner = NexusUtil.determineBlockOwner(block);
         if (owner != null) {
             e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
         } else {
