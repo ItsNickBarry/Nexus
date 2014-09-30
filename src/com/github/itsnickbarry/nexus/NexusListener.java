@@ -39,19 +39,19 @@ public class NexusListener implements Listener {
 //        System.out.println(String.format("Nexus break took %d ms", System.currentTimeMillis() - start));
     }
     
-    @EventHandler
-    public void onNexusPlace(BlockPlaceEvent e) {
-        long start = System.currentTimeMillis();
-        Block block = e.getBlock();
-        ItemStack inHand = e.getItemInHand();
-        if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
-            Nexus newNexus = new Nexus(block, NexusUtil.initialPower, NexusUtil.initialSpread);
-            //nexus.add(newNexus);
-            NexusUtil.addNexus(newNexus);
-            e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
-        }
-        System.out.println(String.format("Nexus place took %d ms", System.currentTimeMillis() - start));
-    }
+//    @EventHandler
+//    public void onNexusPlace(BlockPlaceEvent e) {
+//        long start = System.currentTimeMillis();
+//        Block block = e.getBlock();
+//        ItemStack inHand = e.getItemInHand();
+//        if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
+//            Nexus newNexus = new Nexus(block, NexusUtil.initialPower, NexusUtil.initialSpread);
+//            //nexus.add(newNexus);
+//            NexusUtil.addNexus(newNexus);
+//            e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
+//        }
+//        System.out.println(String.format("Nexus place took %d ms", System.currentTimeMillis() - start));
+//    }
     
     @EventHandler
     public void onExplosion(EntityExplodeEvent e) {
@@ -77,6 +77,15 @@ public class NexusListener implements Listener {
             e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
         } else {
             e.getPlayer().sendMessage("Unowned");
+        }
+        
+        
+        ItemStack inHand = e.getItemInHand();
+        if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
+            Nexus newNexus = new Nexus(block, NexusUtil.initialPower, NexusUtil.initialSpread);
+            //nexus.add(newNexus);
+            NexusUtil.addNexus(newNexus);
+            e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }
 
     }

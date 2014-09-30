@@ -3,12 +3,16 @@ package com.github.itsnickbarry.nexus;
 import java.util.Comparator;
 
 public abstract class NexusComparator {
-    
+    /*
+     * Note that the return statement for Max comparators is
+     * not the same as the return statement for Min comparators
+     */
     public static class XMax implements Comparator<Nexus> {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            return (n1.getX() + n1.getEffectiveRadius()) - (n2.getX() + n2.getEffectiveRadius());
+            int difference = (n1.getX() + n1.getEffectiveRadius()) - (n2.getX() + n2.getEffectiveRadius());
+            return (difference != 0 ? difference : n1.getId() - n2.getId());
         }
         
     }
@@ -17,7 +21,8 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            return (n1.getX() - n1.getEffectiveRadius()) - (n2.getX() - n2.getEffectiveRadius());
+            int difference = (n1.getX() - n1.getEffectiveRadius()) - (n2.getX() - n2.getEffectiveRadius());
+            return (difference != 0 ? difference : n2.getId() - n1.getId());
         }
         
     }
@@ -26,7 +31,8 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            return (n1.getZ() + n1.getEffectiveRadius()) - (n2.getZ() + n2.getEffectiveRadius());
+            int difference = (n1.getZ() + n1.getEffectiveRadius()) - (n2.getZ() + n2.getEffectiveRadius());
+            return (difference != 0 ? difference : n1.getId() - n2.getId());
         }
         
     }
@@ -35,7 +41,8 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            return (n1.getZ() - n1.getEffectiveRadius()) - (n2.getZ() - n2.getEffectiveRadius());
+            int difference = (n1.getZ() - n1.getEffectiveRadius()) - (n2.getZ() - n2.getEffectiveRadius());
+            return (difference != 0 ? difference : n2.getId() - n1.getId());
         }
         
     }

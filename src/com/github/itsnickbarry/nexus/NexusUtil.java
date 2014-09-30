@@ -11,6 +11,8 @@ import org.bukkit.block.Block;
 public class NexusUtil {
 
     static AtomicInteger nexusCurrentId = new AtomicInteger();
+    
+    //configuration information
     static int minPower = 1;
     static int initialPower = 100;
     static int initialSpread = 10;
@@ -22,6 +24,11 @@ public class NexusUtil {
     static Set<Nexus> xmin = new TreeSet<Nexus>(new NexusComparator.XMin()); // sorted by min x
     static Set<Nexus> zmax = new TreeSet<Nexus>(new NexusComparator.ZMax()); // sorted by max z
     static Set<Nexus> zmin = new TreeSet<Nexus>(new NexusComparator.ZMin()); // sorted by min z
+    
+    public static void addNexus(Nexus nexus) {
+        allNexus.add(nexus);
+        refreshSets();
+    }
 
     public static Nexus determineBlockOwner(Block block) {
 
@@ -83,10 +90,5 @@ public class NexusUtil {
         xmin.addAll(allNexus);
         zmax.addAll(allNexus);
         zmin.addAll(allNexus);
-    }
-    
-    public static void addNexus(Nexus nexus) {
-        allNexus.add(nexus);
-        refreshSets();
     }
 }
