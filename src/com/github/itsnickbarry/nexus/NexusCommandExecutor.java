@@ -25,7 +25,7 @@ public class NexusCommandExecutor implements CommandExecutor {
                     ref = n;
                 }
             }
-            sender.sendMessage("X: " + ref.getX() + "\nY: " + ref.getY() + "\nZ: " + ref.getZ() + "\nPower: " + ref.getPower() + "\nSpread: " + ref.getSpread() + "\nEffective Radius: " + ref.getEffectiveRadius());
+            sender.sendMessage("X: " + ref.getX() + "\nY: " + ref.getY() + "\nZ: " + ref.getZ() + "\nPower: " + ref.getPower() + "\nSpread: " + ref.getSpread() + "\nEffective Radius: " + ref.getRadius());
         }
 
         return true;

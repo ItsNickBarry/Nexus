@@ -11,7 +11,7 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            int difference = (n1.getX() + n1.getEffectiveRadius()) - (n2.getX() + n2.getEffectiveRadius());
+            int difference = (n1.getX() + n1.getRadius()) - (n2.getX() + n2.getRadius());
             return (difference != 0 ? difference : n1.getId() - n2.getId());
         }
         
@@ -21,7 +21,7 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            int difference = (n1.getX() - n1.getEffectiveRadius()) - (n2.getX() - n2.getEffectiveRadius());
+            int difference = (n1.getX() - n1.getRadius()) - (n2.getX() - n2.getRadius());
             return (difference != 0 ? difference : n2.getId() - n1.getId());
         }
         
@@ -31,7 +31,7 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            int difference = (n1.getZ() + n1.getEffectiveRadius()) - (n2.getZ() + n2.getEffectiveRadius());
+            int difference = (n1.getZ() + n1.getRadius()) - (n2.getZ() + n2.getRadius());
             return (difference != 0 ? difference : n1.getId() - n2.getId());
         }
         
@@ -41,7 +41,7 @@ public abstract class NexusComparator {
         
         @Override
         public int compare(Nexus n1, Nexus n2) {
-            int difference = (n1.getZ() - n1.getEffectiveRadius()) - (n2.getZ() - n2.getEffectiveRadius());
+            int difference = (n1.getZ() - n1.getRadius()) - (n2.getZ() - n2.getRadius());
             return (difference != 0 ? difference : n2.getId() - n1.getId());
         }
         

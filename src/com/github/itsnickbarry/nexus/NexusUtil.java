@@ -13,9 +13,13 @@ public class NexusUtil {
     static AtomicInteger nexusCurrentId = new AtomicInteger();
     
     //configuration information
+    //when loaded, ensure that minPower, initialPower, and initialSpread > 0,
+    //and that minPower * initialSpread < initialPower
     static int minPower = 1;
-    static int initialPower = 100;
-    static int initialSpread = 10;
+    static int basePower = 100;
+    static int baseSpread = 10;
+    static double powerFactor = 5000;
+    static double spreadFactor = .01;
     static boolean useSpheres = true;
 
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list
@@ -32,16 +36,14 @@ public class NexusUtil {
 
     public static Nexus determineBlockOwner(Block block) {
 
-        Nexus point = new Nexus(block);
+        Nexus point = new Nexus(block, false);
 
         Set<Nexus> candidates = new TreeSet<Nexus>(new NexusComparator.XMax());
 
         candidates.addAll(((TreeSet<Nexus>) xmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) xmin).headSet(point, true));
-         System.out.println("Within X range: " + candidates.size());
         candidates.retainAll(((TreeSet<Nexus>) zmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) zmin).headSet(point, true));
-         System.out.println("Within Z range: " + candidates.size());
 
         double bestPower = minPower;
         Nexus bestNexus = null;
@@ -57,21 +59,21 @@ public class NexusUtil {
         return bestNexus;
     }
     
-    public static Nexus determineBlockOwner2(Block block){
-
-        double bestPower = minPower;
-        Nexus bestNexus = null;
-
-        for (Nexus n : allNexus) {
-            double power = n.powerAt(block);
-            if (power > bestPower) {
-                bestPower = power;
-                bestNexus = n;
-            }
-        }
-
-        return bestNexus;
-    }
+//    public static Nexus determineBlockOwner2(Block block){
+//
+//        double bestPower = minPower;
+//        Nexus bestNexus = null;
+//
+//        for (Nexus n : allNexus) {
+//            double power = n.powerAt(block);
+//            if (power > bestPower) {
+//                bestPower = power;
+//                bestNexus = n;
+//            }
+//        }
+//
+//        return bestNexus;
+//    }
 
     public static double formula(double distance, double power, double spread) {
         return (power / spread)
@@ -80,10 +82,10 @@ public class NexusUtil {
     }
 
     public static void refreshSets() {
-        // do this onEnable, whenever Nexus points are assigned, and whenever a new Nexus is created
+        // do this onEnable, whenever Nexus points are scheduled to be assigned, and whenever a Nexus is created or destroyed
 
         for (Nexus n : allNexus) {
-            n.calculateEffectiveRadius();
+            n.update();
         }
 
         xmax.addAll(allNexus);

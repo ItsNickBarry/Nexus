@@ -44,7 +44,7 @@ public class NexusListener implements Listener {
         //nexus creation
         ItemStack inHand = e.getItemInHand();
         if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
-            Nexus newNexus = new Nexus(block, NexusUtil.initialPower, NexusUtil.initialSpread);
+            Nexus newNexus = new Nexus(block, true);
             NexusUtil.addNexus(newNexus);
             e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }
