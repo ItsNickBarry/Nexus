@@ -13,13 +13,13 @@ public class NexusUtil {
     static AtomicInteger nexusCurrentId = new AtomicInteger();
     
     //configuration information
-    //when loaded, ensure that minPower, initialPower, and initialSpread > 0,
-    //and that minPower * initialSpread < initialPower
-    static int minPower = 1;
-    static int basePower = 100;
-    static int baseSpread = 10;
+    static final int minPower = 1; //it's probably best if this is not configurable
+    static int basePowerPoints = 100; //number of points granted to a new Nexus
+//    static int baseSpread = 10; //the amount of spread at 0 spreadPoints TODO this doens't make sense
     static double powerFactor = 5000;
-    static double spreadFactor = .01;
+    static double spreadModificationFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
+    static double spreadNormalizationFactor = 2.5; //how quickly spread increases with power; AT LEAST 0 < spreadNormalizationFactor
+    static double spreadVariability = 1; //TODO this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     static boolean useSpheres = true;
 
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list
@@ -74,12 +74,6 @@ public class NexusUtil {
 //
 //        return bestNexus;
 //    }
-
-    public static double formula(double distance, double power, double spread) {
-        return (power / spread)
-                * Math.exp(-1
-                        * ((Math.pow(distance, 2)) / (2 * Math.pow(spread, 2))));
-    }
 
     public static void refreshSets() {
         // do this onEnable, whenever Nexus points are scheduled to be assigned, and whenever a Nexus is created or destroyed
