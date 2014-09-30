@@ -90,7 +90,10 @@ public class Nexus {
     }
     
     private void calculatePower() {
-        //TODO this increases too quickly at the beginning
+        //TODO this increases too quickly at the beginning; maybe a linear function would work, in combination with half-life or exponential decay of powerPoints
+        //maybe y = sqrt(1000x) * 2atan(.01x) / π
+        
+        //TODO set a minumum power, so that spread < power always
         this.power = (int) (Math.sqrt((double)NexusUtil.powerFactor * (double)this.powerPoints) + 1);
     }
     
@@ -101,8 +104,7 @@ public class Nexus {
     }
     
     private double calculateSpreadNormalized() {
-        //TODO make sure that this is not too high relative to power.  possibly set a minimum power
-        //0 < 2 * normalizedSpread < Power
-        return Math.sqrt(NexusUtil.spreadNormalizationFactor * this.power);
+        //This formula is only partially arbitrary.  I think I could have gotten to it logically if I knew how to do math.
+        return Math.PI * Math.sqrt((double)this.power / Math.PI);
     }
 }
