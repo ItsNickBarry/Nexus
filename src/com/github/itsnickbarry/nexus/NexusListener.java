@@ -28,15 +28,15 @@ public class NexusListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        long start = System.currentTimeMillis();
+//        long start = System.currentTimeMillis();
         Block block = e.getBlock();
-        Nexus owner = NexusUtil.determineBlockOwner(block);
+        Nexus owner = NexusUtil.determineBlockOwner2(block);
         if (owner != null) {
             e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
         } else {
             e.getPlayer().sendMessage("Unowned");
         }
-        System.out.println(String.format("Nexus break took %d ms", System.currentTimeMillis() - start));
+//        System.out.println(String.format("Nexus break took %d ms", System.currentTimeMillis() - start));
     }
     
     @EventHandler
@@ -45,10 +45,10 @@ public class NexusListener implements Listener {
         Block block = e.getBlock();
         ItemStack inHand = e.getItemInHand();
         if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
-            Nexus newNexus = new Nexus(block, 100, 10, true);
+            Nexus newNexus = new Nexus(block, NexusUtil.initialPower, NexusUtil.initialSpread);
             //nexus.add(newNexus);
             NexusUtil.addNexus(newNexus);
-            //e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
+            e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }
         System.out.println(String.format("Nexus place took %d ms", System.currentTimeMillis() - start));
     }
@@ -71,6 +71,13 @@ public class NexusListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
+        Block block = e.getBlock();
+        Nexus owner = NexusUtil.determineBlockOwner2(block);
+        if (owner != null) {
+            e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
+        } else {
+            e.getPlayer().sendMessage("Unowned");
+        }
 
     }
 

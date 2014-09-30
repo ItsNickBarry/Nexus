@@ -15,7 +15,11 @@ public class NexusCommandExecutor implements CommandExecutor {
          * 
          * show borders (of currently occupied nexus)
          */
+        
+        if (args[0].equalsIgnoreCase("count")){
+            sender.sendMessage("Number of Nexus: " + NexusUtil.nexusCurrentId);
+        }
 
-        return false;
+        return true;
     }
 }

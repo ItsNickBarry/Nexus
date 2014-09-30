@@ -15,11 +15,8 @@ public class Nexus {
 
     private int effectiveRadius; // This value needs to be stored here and updated regularly
 
-    public Nexus(Block block, int power, int spread, boolean real) {
-        if (real)
-            this.id = NexusUtil.nexusCurrentId.incrementAndGet();
-        else
-            this.id = 0;
+    public Nexus(Block block, int power, int spread) {
+        this.id = NexusUtil.nexusCurrentId.incrementAndGet();
         this.x = block.getX();
         this.y = block.getY();
         this.z = block.getZ();
@@ -27,6 +24,17 @@ public class Nexus {
         this.power = power;
         this.spread = spread;
         this.calculateEffectiveRadius();
+    }
+    
+    public Nexus(Block block){
+        this.id = 0;
+        this.x = block.getX();
+        this.y = block.getY();
+        this.z = block.getZ();
+        this.worldUID = block.getWorld().getUID();
+        this.power = 10;
+        this.spread = 1;
+        this.effectiveRadius = 0;
     }
 
     public int getEffectiveRadius() {
@@ -65,23 +73,21 @@ public class Nexus {
         this.effectiveRadius = (int) Math.sqrt(-2 * Math.pow(this.spread, 2) * Math.log((NexusUtil.minPower * this.spread) / this.power));
     }
 
-    public double powerAt(int x, int y, int z) {
-
-        if (!NexusUtil.useSpheres) {
-            y = this.y;
-        }
-
-        double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
-
-        return NexusUtil.formula(distance, this.power, this.spread);
-    }
+//    public double powerAt(int x, int y, int z) {
+//
+//        if (!NexusUtil.useSpheres) {
+//            y = this.y;
+//        }
+//
+//        double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
+//
+//        return NexusUtil.formula(distance, this.power, this.spread);
+//    }
     
     public double powerAt(Block block) {
         int x = block.getX();
-        int y = block.getY();
+        int y = (NexusUtil.useSpheres ? block.getY() : this.y);
         int z = block.getZ();
-        if (!NexusUtil.useSpheres)
-            y = this.y;
         double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
         return NexusUtil.formula(distance, this.power, this.spread);
     }
