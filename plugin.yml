@@ -6,3 +6,11 @@ main: com.github.itsnickbarry.nexus.NexusMain
 commands:
   nexus:
     aliases: [n]
+    
+permissions:
+  nexus.*:
+    default: false
+    children:
+      nexus.admin: false
+      nexus.create: true
+      nexus.destroy: true

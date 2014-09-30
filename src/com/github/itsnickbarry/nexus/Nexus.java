@@ -3,6 +3,7 @@ package com.github.itsnickbarry.nexus;
 import java.util.UUID;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 public class Nexus {
 
@@ -67,6 +68,11 @@ public class Nexus {
     
     public UUID getWorldUID() {
         return this.worldUID;
+    }
+    
+    public boolean allowsPlayerBlockEdit(Player p) {
+        //TODO
+        return false;
     }
 
     public void calculateEffectiveRadius(){
