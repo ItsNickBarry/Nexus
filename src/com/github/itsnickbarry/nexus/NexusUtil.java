@@ -6,28 +6,35 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class NexusUtil {
-
-    static AtomicInteger nexusCurrentId = new AtomicInteger();
     
-    //configuration information
-    static final int minPower = 1; //it's probably best if this is not configurable
-    static int basePowerPoints = 100; //number of points granted to a new Nexus
-//    static int baseSpread = 10; //the amount of spread at 0 spreadPoints TODO this doens't make sense
-    static double powerFactor = 5000;
-    static double spreadModificationFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
-    static double spreadNormalizationFactor = 2.5; //how quickly spread increases with power; AT LEAST 0 < spreadNormalizationFactor
-    static double spreadVariability = 1; //TODO this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
+    /*
+     * Configuration information
+     */
+    static double powerLevelFactor = 5000;
+    static int powerLevelMin = 1; //it's probably best if this is not configurable
+    static int powerPointsBase = 100; //number of points granted to a new Nexus
+    static int powerPointsMin = 75; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
+    static double spreadLevelFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
+    static double spreadLevelVariability = 1; //TODO this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     
-    //half-life, in days, of power and spread points
+    //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
     static double powerHalfLife = 10;
     static double spreadHalfLife = 20; 
     
     static boolean useSpheres = true;
+    /*
+     * 
+     */
 
-    static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list
+    
+    static AtomicInteger nexusCurrentId = new AtomicInteger();
+
+    static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list; just use one of the sets
 
     static Set<Nexus> xmax = new TreeSet<Nexus>(new NexusComparator.XMax()); // sorted by max x
     static Set<Nexus> xmin = new TreeSet<Nexus>(new NexusComparator.XMin()); // sorted by min x
@@ -50,7 +57,7 @@ public class NexusUtil {
         candidates.retainAll(((TreeSet<Nexus>) zmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) zmin).headSet(point, true));
 
-        double bestPower = minPower;
+        double bestPower = powerLevelMin;
         Nexus bestNexus = null;
 
         for (Nexus n : candidates) {
@@ -79,6 +86,20 @@ public class NexusUtil {
 //
 //        return bestNexus;
 //    }
+    
+    public static void loadConfig() {
+        FileConfiguration config = Bukkit.getPluginManager().getPlugin("FastRoads").getConfig();
+        
+        powerLevelFactor = config.getDouble("powerLevelFactor");
+        powerLevelMin = config.getInt("powerLevelMin");
+        powerPointsBase = config.getInt("powerPointsBase");
+        powerPointsMin = config.getInt("powerPointsMin");
+        spreadLevelFactor = config.getDouble("spreadLevelFactor");
+        spreadLevelVariability = config.getDouble("spreadLevelVariability");
+        powerHalfLife = config.getDouble("powerHalfLife");
+        spreadHalfLife = config.getDouble("spreadHalfLife");
+        useSpheres = config.getBoolean("useSpheres");
+    }
 
     public static void refreshSets() {
         // do this onEnable, whenever Nexus points are scheduled to be assigned, and whenever a Nexus is created or destroyed

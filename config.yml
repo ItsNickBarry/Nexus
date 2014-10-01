@@ -1,0 +1,13 @@
+powerLevelFactor: 5000
+powerLevelMin: 1
+powerPointsBase: 100
+powerPointsMin: 75
+
+spreadLevelFactor: .01
+spreadLevelVariabliity: 1
+
+# Recommended to change half-life values when server needs balancing
+powerHalfLife: 10
+spreadHalfLife: 20
+
+useSpheres: false

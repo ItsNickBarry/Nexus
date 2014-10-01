@@ -22,6 +22,7 @@ public class NexusMain extends JavaPlugin {
          * 
          * NexusUtil.allNexus NexusUtil.minPower NexusUtil.useSpheres
          */
+        NexusUtil.loadConfig();
 
         NexusUtil.refreshSets();
     }

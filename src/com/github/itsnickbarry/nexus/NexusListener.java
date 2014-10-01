@@ -25,7 +25,7 @@ public class NexusListener implements Listener {
             p.sendMessage("Unowned");
         }
         
-        //if (block is a nexus && player has authorization and Bukkit perms to destroy a nexus)
+        //if (block is a nexus && player has authorization(from the nexus, or from the nexus that controls the block) and Bukkit perms to destroy a nexus)
         //    destroy nexus
     }
 

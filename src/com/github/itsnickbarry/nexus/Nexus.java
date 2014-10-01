@@ -6,8 +6,6 @@ import java.util.concurrent.TimeUnit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.github.itsnickbarry.fractions.Database;
-
 public class Nexus {
 
     private final int id;
@@ -25,7 +23,7 @@ public class Nexus {
         this.y = block.getY();
         this.z = block.getZ();
         this.worldUID = block.getWorld().getUID();
-        this.powerPoints = NexusUtil.basePowerPoints;
+        this.powerPoints = NexusUtil.powerPointsBase;
         if (real) {
             this.id = NexusUtil.nexusCurrentId.incrementAndGet();
             NexusUtil.refreshSets();
@@ -87,39 +85,42 @@ public class Nexus {
     
     public void update() {
         //decayPoints() could potentially be run at a different time, but will be run here for now
-        this.decayPoints();
+        if (!this.decayPoints()){
+            NexusUtil.allNexus.remove(this);
+            return;
+        }
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();
+        
+    }
+    
+    private void calculatePower() {
+        //TODO this increases too quickly at the beginning; maybe a linear function would work, in combination with half-life or exponential decay of powerPoints
+        this.power = (int) (Math.sqrt((double)NexusUtil.powerLevelFactor * (double)this.powerPoints) + 1);
     }
 
     private void calculateRadius() {
         //function is not continuous when power < spread; in this case, set radius to 0
         //so far, it seems like this occurs when power < pi * minPower
-        this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.minPower * (double)this.spread) / (double)this.power));
-    }
-    
-    private void calculatePower() {
-        //TODO this increases too quickly at the beginning; maybe a linear function would work, in combination with half-life or exponential decay of powerPoints
-        //maybe y = sqrt(1000x) * 2atan(.01x) / π
-        
-        //TODO set a minumum power, so that spread < power always
-        this.power = (int) (Math.sqrt((double)NexusUtil.powerFactor * (double)this.powerPoints) + 1);
+        this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.powerLevelMin * (double)this.spread) / (double)this.power));
     }
     
     private void calculateSpread() {
+        //currently limited to normalizedSpread +- normalizedSpread
         double normalizedSpread = calculateSpreadNormalized();
         
-        this.spread = (int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadVariability * Math.atan(NexusUtil.spreadModificationFactor * (double)this.spreadPoints)));
-    }
-    
-    private void decayPoints() {
-        this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerHalfLife));
-        this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadHalfLife));
+        this.spread = (int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadLevelVariability * Math.atan(NexusUtil.spreadLevelFactor * (double)this.spreadPoints)));
     }
     
     private double calculateSpreadNormalized() {
         //This formula is only partially arbitrary.  I think I could have gotten to it logically if I knew how to do math.
         return Math.PI * Math.sqrt((double)this.power / Math.PI);
+    }
+    
+    private boolean decayPoints() {
+        this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerHalfLife));
+        this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadHalfLife));
+        return this.powerPoints > NexusUtil.powerPointsMin;
     }
 }
