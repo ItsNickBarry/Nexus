@@ -1,9 +1,12 @@
 package com.github.itsnickbarry.nexus;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import com.github.itsnickbarry.fractions.Database;
 
 public class Nexus {
 
@@ -15,6 +18,7 @@ public class Nexus {
     private int power, spread, radius; // These values need to be stored here and updated regularly
     
     private int powerPoints, spreadPoints;
+    private long lastDecayTime;
 
     public Nexus(Block block, boolean real) {
         this.x = block.getX();
@@ -82,6 +86,8 @@ public class Nexus {
     }
     
     public void update() {
+        //decayPoints() could potentially be run at a different time, but will be run here for now
+        this.decayPoints();
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();
@@ -89,6 +95,7 @@ public class Nexus {
 
     private void calculateRadius() {
         //function is not continuous when power < spread; in this case, set radius to 0
+        //so far, it seems like this occurs when power < pi * minPower
         this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.minPower * (double)this.spread) / (double)this.power));
     }
     
@@ -104,6 +111,11 @@ public class Nexus {
         double normalizedSpread = calculateSpreadNormalized();
         
         this.spread = (int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadVariability * Math.atan(NexusUtil.spreadModificationFactor * (double)this.spreadPoints)));
+    }
+    
+    private void decayPoints() {
+        this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerHalfLife));
+        this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadHalfLife));
     }
     
     private double calculateSpreadNormalized() {

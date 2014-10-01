@@ -20,6 +20,11 @@ public class NexusUtil {
     static double spreadModificationFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
     static double spreadNormalizationFactor = 2.5; //how quickly spread increases with power; AT LEAST 0 < spreadNormalizationFactor
     static double spreadVariability = 1; //TODO this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
+    
+    //half-life, in days, of power and spread points
+    static double powerHalfLife = 10;
+    static double spreadHalfLife = 20; 
+    
     static boolean useSpheres = true;
 
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list
