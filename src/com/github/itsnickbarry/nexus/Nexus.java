@@ -70,11 +70,13 @@ public class Nexus {
     }
     
     public double powerAt(Block block) {
+        //function is not continuous when spread == 0; in this case, return 0 (the only situation in which spread == 0 should be when power == 0)
         int x = block.getX();
         int y = (NexusUtil.useSpheres ? block.getY() : this.y);
         int z = block.getZ();
         double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
-        return (this.power / this.spread)
+        return this.spread == 0 ? 0 :
+            (this.power / this.spread)
                 * Math.exp(-1
                         * ((Math.pow(distance, 2)) / (2 * Math.pow(this.spread, 2))));
     }
@@ -86,7 +88,8 @@ public class Nexus {
     }
 
     private void calculateRadius() {
-        this.radius = (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.minPower * (double)this.spread) / (double)this.power));
+        //function is not continuous when power < spread; in this case, set radius to 0
+        this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.minPower * (double)this.spread) / (double)this.power));
     }
     
     private void calculatePower() {
