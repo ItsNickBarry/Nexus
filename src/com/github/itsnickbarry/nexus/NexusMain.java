@@ -14,16 +14,10 @@ public class NexusMain extends JavaPlugin {
     public void onEnable() {
 
         getCommand("nexus").setExecutor(new NexusCommandExecutor());
-        getServer().getPluginManager()
-                .registerEvents(new NexusListener(), this);
-
-        /*
-         * load data:
-         * 
-         * NexusUtil.allNexus NexusUtil.minPower NexusUtil.useSpheres
-         */
+        getServer().getPluginManager().registerEvents(new NexusListener(), this);
+        
         NexusUtil.loadConfig();
-
+        
         NexusUtil.refreshSets();
     }
 

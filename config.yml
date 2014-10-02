@@ -7,7 +7,8 @@ spreadLevelFactor: .01
 spreadLevelVariabliity: 1
 
 # Recommended to change half-life values when server needs balancing
-powerHalfLife: 10
-spreadHalfLife: 20
+powerPointsHalfLife: 10
+spreadPointsHalfLife: 20
 
 useSpheres: false
+

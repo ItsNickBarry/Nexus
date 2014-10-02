@@ -20,11 +20,11 @@ public class NexusUtil {
     static int powerPointsBase = 100; //number of points granted to a new Nexus
     static int powerPointsMin = 75; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
     static double spreadLevelFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
-    static double spreadLevelVariability = 1; //TODO this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
+    static double spreadLevelVariability = 1; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     
     //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
-    static double powerHalfLife = 10;
-    static double spreadHalfLife = 20; 
+    static double powerPointsHalfLife = 10;
+    static double spreadPointsHalfLife = 20; 
     
     static boolean useSpheres = true;
     /*
@@ -88,7 +88,7 @@ public class NexusUtil {
 //    }
     
     public static void loadConfig() {
-        FileConfiguration config = Bukkit.getPluginManager().getPlugin("FastRoads").getConfig();
+        FileConfiguration config = Bukkit.getPluginManager().getPlugin("Nexus").getConfig();
         
         powerLevelFactor = config.getDouble("powerLevelFactor");
         powerLevelMin = config.getInt("powerLevelMin");
@@ -96,9 +96,11 @@ public class NexusUtil {
         powerPointsMin = config.getInt("powerPointsMin");
         spreadLevelFactor = config.getDouble("spreadLevelFactor");
         spreadLevelVariability = config.getDouble("spreadLevelVariability");
-        powerHalfLife = config.getDouble("powerHalfLife");
-        spreadHalfLife = config.getDouble("spreadHalfLife");
+        powerPointsHalfLife = config.getDouble("powerPointsHalfLife");
+        spreadPointsHalfLife = config.getDouble("spreadPointsHalfLife");
         useSpheres = config.getBoolean("useSpheres");
+        
+        //TODO check that all values are within appropriate ranges and, if they're not, revert to defaults
     }
 
     public static void refreshSets() {

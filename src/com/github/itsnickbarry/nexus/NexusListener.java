@@ -69,6 +69,6 @@ public class NexusListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
         // display information when player crosses border
-        // this might take too much cpu, as it does the same calculations as onBlockBread, but is called about 10 times every time a player moves 1 block
+        // this might take too much cpu, as it does the same calculations as onBlockBreak, but is called about 10 times every time a player moves 1 block
     }
 }
