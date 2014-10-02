@@ -1,15 +1,23 @@
 package com.github.itsnickbarry.nexus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.entity.Player;
+
 
 public class NexusPlayer implements NexusOwner {
     
-    long lastSeen;
+    //long lastSeen;
 
-    List<Integer> memberships = new ArrayList<Integer>();
+    //List<Integer> memberships = new ArrayList<Integer>();
     
-    public NexusPlayer() {
-        
+	private final UUID playerUID;
+	
+    public NexusPlayer(Player player) {
+        this.playerUID = player.getUniqueId();
+    }
+    
+    public UUID getUniqueId() {
+    	return this.playerUID;
     }
 }

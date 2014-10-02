@@ -33,6 +33,7 @@ public class NexusUtil {
 
     
     static AtomicInteger nexusCurrentId = new AtomicInteger();
+    static AtomicInteger groupCurrentId = new AtomicInteger();
 
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list; just use one of the sets
 
