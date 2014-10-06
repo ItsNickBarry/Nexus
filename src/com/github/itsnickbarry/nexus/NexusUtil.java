@@ -1,9 +1,11 @@
 package com.github.itsnickbarry.nexus;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.bukkit.Bukkit;
@@ -35,12 +37,26 @@ public class NexusUtil {
     static AtomicInteger nexusCurrentId = new AtomicInteger();
     static AtomicInteger groupCurrentId = new AtomicInteger();
 
+    static Set<NexusOwner> nexusOwners = new HashSet<NexusOwner>();
+    
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list; just use one of the sets
 
     static Set<Nexus> xmax = new TreeSet<Nexus>(new NexusComparator.XMax()); // sorted by max x
     static Set<Nexus> xmin = new TreeSet<Nexus>(new NexusComparator.XMin()); // sorted by min x
     static Set<Nexus> zmax = new TreeSet<Nexus>(new NexusComparator.ZMax()); // sorted by max z
     static Set<Nexus> zmin = new TreeSet<Nexus>(new NexusComparator.ZMin()); // sorted by min z
+    
+    public static void addNexusOwner(NexusOwner owner) {
+    	nexusOwners.add(owner);
+    }
+    
+    public static NexusPlayer getNexusPlayer(UUID playerUID) {
+    	for (NexusOwner nexusOwner : nexusOwners) {
+    		if (nexusOwner.equals(playerUID))
+    			return (NexusPlayer) nexusOwner;
+    	}
+    	return null;
+    }
     
     public static void addNexus(Nexus nexus) {
         allNexus.add(nexus);
@@ -49,7 +65,7 @@ public class NexusUtil {
 
     public static Nexus determineBlockOwner(Block block) {
 
-        Nexus point = new Nexus(block, false);
+        Nexus point = new Nexus(block, null, false);
 
         Set<Nexus> candidates = new TreeSet<Nexus>(new NexusComparator.XMax());
 
