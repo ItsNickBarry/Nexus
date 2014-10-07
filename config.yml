@@ -1,4 +1,4 @@
-powerLevelFactor: 5000
+powerLevelFactor: 100
 powerLevelMin: 1
 powerPointsBase: 100
 powerPointsMin: 75
@@ -7,6 +7,7 @@ spreadLevelFactor: .01
 spreadLevelVariabliity: 1
 
 # Recommended to change half-life values when server needs balancing
+# Set to 0 to indicate no decay
 powerPointsHalfLife: 10
 spreadPointsHalfLife: 20
 

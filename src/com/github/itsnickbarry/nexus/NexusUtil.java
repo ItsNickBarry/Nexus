@@ -78,6 +78,9 @@ public class NexusUtil {
         Nexus bestNexus = null;
 
         for (Nexus n : candidates) {
+        	//TODO maybe find a better way to check for world
+        	if (point.getWorldUID() != n.getWorldUID())
+        		continue;
             double power = n.powerAt(block);
             if (power > bestPower) {
                 bestPower = power;

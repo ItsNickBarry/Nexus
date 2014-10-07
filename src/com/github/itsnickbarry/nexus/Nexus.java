@@ -133,6 +133,10 @@ public class Nexus {
         this.spread =(int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadLevelVariability * Math.atan(NexusUtil.spreadLevelFactor * (double)this.spreadPoints)));
     }
     
+    /**
+     * 
+     * @return the spread level of a Nexus at a given power level, before accounting for spread points
+     */
     private double calculateSpreadNormalized() {
         //This formula is only partially arbitrary.  I think I could have gotten to it logically if I knew how to do math.
         return Math.PI * Math.sqrt((double)this.power / Math.PI);
