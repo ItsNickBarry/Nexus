@@ -1,5 +1,6 @@
+influenceMin: 1
+
 powerLevelFactor: 100
-powerLevelMin: 1
 powerPointsBase: 100
 powerPointsMin: 75
 
@@ -7,8 +8,10 @@ spreadLevelFactor: .01
 spreadLevelVariabliity: 1
 
 # Recommended to change half-life values when server needs balancing
-# Set to 0 to indicate no decay
-powerPointsHalfLife: .005
+# A positive value indicates the amount of time, in days, for the number of points to halve
+# A negative value indicates the amount of time, int days, for the number of points to double
+# A value of 0 will cause the number of points to remain constant
+powerPointsHalfLife: -.005
 spreadPointsHalfLife: 20
 
 useSpheres: false

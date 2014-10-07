@@ -18,8 +18,8 @@ public class NexusCommandExecutor implements CommandExecutor {
          */
         
         if (args[0].equalsIgnoreCase("config")){
+        	sender.sendMessage("influenceMin: " + NexusUtil.influenceMin);
             sender.sendMessage("powerLevelFactor: " + NexusUtil.powerLevelFactor);
-            sender.sendMessage("powerLevelMin: " + NexusUtil.powerLevelMin);
             sender.sendMessage("powerPointsBase: " + NexusUtil.powerPointsBase);
             sender.sendMessage("powerPointsMin: " + NexusUtil.powerPointsMin);
             sender.sendMessage("spreadLevelFactor: " + NexusUtil.spreadLevelFactor);

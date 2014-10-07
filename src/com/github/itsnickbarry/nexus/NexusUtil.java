@@ -17,8 +17,9 @@ public class NexusUtil {
     /*
      * Configuration information
      */
+    static int influenceMin; //it's probably best if this is not configurable
+    
     static double powerLevelFactor;
-    static int powerLevelMin; //it's probably best if this is not configurable
     static int powerPointsBase; //number of points granted to a new Nexus
     static int powerPointsMin; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
     static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
@@ -74,16 +75,16 @@ public class NexusUtil {
         candidates.retainAll(((TreeSet<Nexus>) zmax).tailSet(point, true));
         candidates.retainAll(((TreeSet<Nexus>) zmin).headSet(point, true));
 
-        double bestPower = powerLevelMin;
+        double bestInfluence = influenceMin;
         Nexus bestNexus = null;
 
         for (Nexus n : candidates) {
         	//TODO maybe find a better way to check for world
         	if (point.getWorldUID() != n.getWorldUID())
         		continue;
-            double power = n.powerAt(block);
-            if (power > bestPower) {
-                bestPower = power;
+            double influence = n.influenceAt(block);
+            if (influence > bestInfluence) {
+                bestInfluence = influence;
                 bestNexus = n;
             }
         }
@@ -109,15 +110,14 @@ public class NexusUtil {
     
     public static void loadConfig() {
         FileConfiguration config = Bukkit.getPluginManager().getPlugin("Nexus").getConfig();
-        
+        influenceMin = config.getInt("influenceMin");
         powerLevelFactor = config.getDouble("powerLevelFactor");
-        powerLevelMin = config.getInt("powerLevelMin");
         powerPointsBase = config.getInt("powerPointsBase");
         powerPointsMin = config.getInt("powerPointsMin");
         spreadLevelFactor = config.getDouble("spreadLevelFactor");
         spreadLevelVariability = config.getDouble("spreadLevelVariability");
-        powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 1000 * 60 * 60 * 24);
-        spreadPointsHalfLife = (long)(config.getDouble("spreadPointsHalfLife") * 1000 * 60 * 60 * 24);
+        powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 8.64e7);
+        spreadPointsHalfLife = (long)(config.getDouble("spreadPointsHalfLife") * 8.64e7);
         useSpheres = config.getBoolean("useSpheres");
         
         //TODO check that all values are within appropriate ranges and, if they're not, revert to defaults
