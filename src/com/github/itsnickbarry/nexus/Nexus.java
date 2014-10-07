@@ -100,19 +100,16 @@ public class Nexus {
                         * ((Math.pow(distance, 2)) / (2 * Math.pow(this.spread, 2))));
     }
     
-    public void update() {
+    public boolean update() {
         //decayPoints() could potentially be run at a different time, but will be run here for now
-        // Commented out for now as it was causing problems
-        /*
         if (!this.decayPoints()){
-            NexusUtil.allNexus.remove(this);
-            return;
+            return true;
         }
-        */
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();
         
+        return false;
     }
     
     private void calculatePower() {
