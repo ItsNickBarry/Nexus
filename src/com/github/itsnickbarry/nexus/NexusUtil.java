@@ -17,18 +17,18 @@ public class NexusUtil {
     /*
      * Configuration information
      */
-    static double powerLevelFactor = 5000;
-    static int powerLevelMin = 1; //it's probably best if this is not configurable
-    static int powerPointsBase = 100; //number of points granted to a new Nexus
-    static int powerPointsMin = 75; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
-    static double spreadLevelFactor = .01; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
-    static double spreadLevelVariability = 1; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
+    static double powerLevelFactor;
+    static int powerLevelMin; //it's probably best if this is not configurable
+    static int powerPointsBase; //number of points granted to a new Nexus
+    static int powerPointsMin; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
+    static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
+    static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     
     //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
-    static double powerPointsHalfLife = 10;
-    static double spreadPointsHalfLife = 20; 
+    static double powerPointsHalfLife;
+    static double spreadPointsHalfLife; 
     
-    static boolean useSpheres = true;
+    static boolean useSpheres;
     /*
      * 
      */
@@ -123,13 +123,15 @@ public class NexusUtil {
     public static void refreshSets() {
         // do this onEnable, whenever Nexus points are scheduled to be assigned, and whenever a Nexus is created or destroyed
 
-       // List<Nexus> decayedNexus = new ArrayList<Nexus>();
+        List<Nexus> decayedNexus = new ArrayList<Nexus>();
         
         for (Nexus n : allNexus) {
-            n.update();
+            if (!n.update()) {
+                decayedNexus.add(n);
+            }
         }
         
-        //allNexus.removeAll(decayedNexus);
+        allNexus.removeAll(decayedNexus);
 
         xmax.addAll(allNexus);
         xmin.addAll(allNexus);

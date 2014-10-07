@@ -16,16 +16,18 @@ public class NexusCommandExecutor implements CommandExecutor {
          * show borders (of currently occupied nexus)
          */
         
-        if (args[0].equalsIgnoreCase("count")){
-            sender.sendMessage("Number of Nexus: " + NexusUtil.nexusCurrentId);
+        if (args[0].equalsIgnoreCase("config")){
+            sender.sendMessage("powerLevelFactor: " + NexusUtil.powerLevelFactor);
+            sender.sendMessage("powerLevelMin: " + NexusUtil.powerLevelMin);
+            sender.sendMessage("powerPointsBase: " + NexusUtil.powerPointsBase);
+            sender.sendMessage("powerPointsMin: " + NexusUtil.powerPointsMin);
+            sender.sendMessage("spreadLevelFactor: " + NexusUtil.spreadLevelFactor);
+            sender.sendMessage("spreadLevelVariability: " + NexusUtil.spreadLevelVariability);
+            sender.sendMessage("powerPointsHalfLife: " + NexusUtil.powerPointsHalfLife);
+            sender.sendMessage("spreadPointsHalfLife: " + NexusUtil.spreadPointsHalfLife);
+            sender.sendMessage("useSpheres: " + NexusUtil.useSpheres);
         } else if (args[0].equalsIgnoreCase("info")){
-            Nexus ref = null;
-            for (Nexus n : NexusUtil.allNexus){
-                if (n.getId() == Integer.parseInt(args[1])){
-                    ref = n;
-                }
-            }
-            sender.sendMessage("X: " + ref.getX() + "\nY: " + ref.getY() + "\nZ: " + ref.getZ() + "\nPower: " + ref.getPower() + "\nSpread: " + ref.getSpread() + "\nEffective Radius: " + ref.getRadius());
+            
         }
 
         return true;

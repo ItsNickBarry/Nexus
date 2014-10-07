@@ -100,19 +100,25 @@ public class Nexus {
                         * ((Math.pow(distance, 2)) / (2 * Math.pow(this.spread, 2))));
     }
     
-    public void update() {
+    /**
+     * 
+     * @return true if Nexus still has enough power points to remain active
+     */
+    public boolean update() {
         //decayPoints() could potentially be run at a different time, but will be run here for now
-//        if (!this.decayPoints()){
-//            return true;
-//        }
+        if (!this.decayPoints()){
+            return false;
+        }
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();
+        
+        return true;
     }
     
     private void calculatePower() {
         //TODO this increases too quickly at the beginning; maybe a linear function would work, in combination with half-life or exponential decay of powerPoints
-        this.power = (int) (Math.sqrt((double)NexusUtil.powerLevelFactor * (double)this.powerPoints) + 1);
+        this.power =  (int) (Math.sqrt((double)NexusUtil.powerLevelFactor * (double)this.powerPoints));
     }
 
     private void calculateRadius() {
@@ -124,7 +130,7 @@ public class Nexus {
         //currently limited to normalizedSpread +- normalizedSpread
         double normalizedSpread = calculateSpreadNormalized();
         
-        this.spread = (int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadLevelVariability * Math.atan(NexusUtil.spreadLevelFactor * (double)this.spreadPoints)));
+        this.spread =(int) (normalizedSpread + ((2 / Math.PI) * normalizedSpread * NexusUtil.spreadLevelVariability * Math.atan(NexusUtil.spreadLevelFactor * (double)this.spreadPoints)));
     }
     
     private double calculateSpreadNormalized() {
@@ -132,9 +138,15 @@ public class Nexus {
         return Math.PI * Math.sqrt((double)this.power / Math.PI);
     }
     
+    /**
+     * 
+     * @return true if Nexus still has enough power points to remain active
+     */
     private boolean decayPoints() {
-        this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerPointsHalfLife));
-        this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadPointsHalfLife));
+        if (NexusUtil.powerPointsHalfLife == 0)
+            this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerPointsHalfLife));
+        if (NexusUtil.spreadPointsHalfLife == 0)
+            this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadPointsHalfLife));
         return this.powerPoints > NexusUtil.powerPointsMin;
     }
 }
