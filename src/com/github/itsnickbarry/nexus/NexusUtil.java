@@ -25,8 +25,8 @@ public class NexusUtil {
     static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     
     //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
-    static double powerPointsHalfLife;
-    static double spreadPointsHalfLife; 
+    static long powerPointsHalfLife;
+    static long spreadPointsHalfLife; 
     
     static boolean useSpheres;
     /*
@@ -116,8 +116,8 @@ public class NexusUtil {
         powerPointsMin = config.getInt("powerPointsMin");
         spreadLevelFactor = config.getDouble("spreadLevelFactor");
         spreadLevelVariability = config.getDouble("spreadLevelVariability");
-        powerPointsHalfLife = config.getDouble("powerPointsHalfLife");
-        spreadPointsHalfLife = config.getDouble("spreadPointsHalfLife");
+        powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 1000 * 60 * 60 * 24);
+        spreadPointsHalfLife = (long)(config.getDouble("spreadPointsHalfLife") * 1000 * 60 * 60 * 24);
         useSpheres = config.getBoolean("useSpheres");
         
         //TODO check that all values are within appropriate ranges and, if they're not, revert to defaults

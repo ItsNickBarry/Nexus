@@ -1,7 +1,6 @@
 package com.github.itsnickbarry.nexus;
 
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -16,7 +15,7 @@ public class Nexus {
     
     private int power, spread, radius; // These values need to be stored here and updated regularly
     
-    private int powerPoints, spreadPoints;
+    private double powerPoints, spreadPoints;
     private long lastDecayTime;
 
     public Nexus(Block block, NexusOwner owner, boolean real) {
@@ -25,6 +24,7 @@ public class Nexus {
         this.z = block.getZ();
         this.worldUID = block.getWorld().getUID();
         this.powerPoints = NexusUtil.powerPointsBase;
+        this.lastDecayTime = System.currentTimeMillis();
         if (real) {
             this.id = NexusUtil.nexusCurrentId.incrementAndGet();
             this.owner = owner;
@@ -44,10 +44,6 @@ public class Nexus {
     public void setOwner(NexusOwner owner) {
     	this.owner = owner;
     }
-    
-    public int getRadius() {
-        return this.radius;
-    }
 
     public int getId() {
         return this.id;
@@ -59,6 +55,14 @@ public class Nexus {
 
     public int getSpread() {
         return this.spread;
+    }
+    
+    public int getRadius() {
+        return this.radius;
+    }
+    
+    public double getPowerPoints() {
+    	return this.powerPoints;
     }
 
     public int getX() {
@@ -147,10 +151,11 @@ public class Nexus {
      * @return true if Nexus still has enough power points to remain active
      */
     private boolean decayPoints() {
-        if (NexusUtil.powerPointsHalfLife == 0)
-            this.powerPoints = (int) (this.powerPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerPointsHalfLife));
-        if (NexusUtil.spreadPointsHalfLife == 0)
-            this.spreadPoints = (int) (this.spreadPoints * Math.pow(.5, TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadPointsHalfLife));
+        if (NexusUtil.powerPointsHalfLife != 0)
+            this.powerPoints = (this.powerPoints * Math.pow(.5, (double)(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.powerPointsHalfLife));
+        if (NexusUtil.spreadPointsHalfLife != 0)
+            this.spreadPoints = (this.spreadPoints * Math.pow(.5, (double)(System.currentTimeMillis() - this.lastDecayTime) / NexusUtil.spreadPointsHalfLife));
+        this.lastDecayTime = System.currentTimeMillis();
         return this.powerPoints > NexusUtil.powerPointsMin;
     }
 }
