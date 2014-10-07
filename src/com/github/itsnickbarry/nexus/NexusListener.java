@@ -35,14 +35,18 @@ public class NexusListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent e) {
-        Block block = e.getBlock();
-        Nexus owner = NexusUtil.determineBlockOwner(block);
-        if (owner != null && !owner.allowsPlayerBlockEdit(e.getPlayer())) {
-            e.getPlayer().sendMessage(String.format("Owned by %d", owner.getId()));
-            e.setCancelled(true);
-            return;
+        Block b = e.getBlock();
+        Player p = e.getPlayer();
+        Nexus n = NexusUtil.determineBlockOwner(b);
+        if (n != null) {
+            if (!n.allowsPlayerBlockEdit(p)) {
+                e.setCancelled(true);
+                p.sendMessage(String.format("Cancelled, Owned by %d", n.getId()));
+            } else {
+                p.sendMessage(String.format("Success, Owned by %d", n.getId()));
+            }
         } else {
-            e.getPlayer().sendMessage("Unowned");
+            p.sendMessage("Unowned");
         }
         
         //nexus creation
@@ -53,7 +57,7 @@ public class NexusListener implements Listener {
             	nexusPlayer = new NexusPlayer(e.getPlayer());
             	NexusUtil.addNexusOwner(nexusPlayer);
             }
-        	Nexus newNexus = new Nexus(block, nexusPlayer, true);
+        	Nexus newNexus = new Nexus(b, nexusPlayer, true);
             NexusUtil.addNexus(newNexus);
             e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }

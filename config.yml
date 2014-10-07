@@ -1,4 +1,4 @@
-powerLevelFactor: 5000
+powerLevelFactor: 100
 powerLevelMin: 1
 powerPointsBase: 100
 powerPointsMin: 75

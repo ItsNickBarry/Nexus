@@ -100,16 +100,14 @@ public class Nexus {
                         * ((Math.pow(distance, 2)) / (2 * Math.pow(this.spread, 2))));
     }
     
-    public boolean update() {
+    public void update() {
         //decayPoints() could potentially be run at a different time, but will be run here for now
-        if (!this.decayPoints()){
-            return true;
-        }
+//        if (!this.decayPoints()){
+//            return true;
+//        }
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();
-        
-        return false;
     }
     
     private void calculatePower() {

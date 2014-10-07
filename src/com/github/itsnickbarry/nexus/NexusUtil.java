@@ -123,15 +123,13 @@ public class NexusUtil {
     public static void refreshSets() {
         // do this onEnable, whenever Nexus points are scheduled to be assigned, and whenever a Nexus is created or destroyed
 
-        List<Nexus> decayedNexus = new ArrayList<Nexus>();
+       // List<Nexus> decayedNexus = new ArrayList<Nexus>();
         
         for (Nexus n : allNexus) {
-            if (n.update()){
-                decayedNexus.add(n);
-            }
+            n.update();
         }
         
-        allNexus.removeAll(decayedNexus);
+        //allNexus.removeAll(decayedNexus);
 
         xmax.addAll(allNexus);
         xmin.addAll(allNexus);
