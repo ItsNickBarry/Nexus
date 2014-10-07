@@ -30,7 +30,7 @@ public class NexusCommandExecutor implements CommandExecutor {
         } else if (args[0].equalsIgnoreCase("here")){
         	NexusUtil.refreshSets();
             Nexus n = NexusUtil.determineBlockOwner(((Player)sender).getLocation().getBlock());
-            sender.sendMessage("Power points of Nexus that controls current location: " + n.getPowerPoints());
+            sender.sendMessage(n.getPowerPoints() < NexusUtil.powerPointsMin ? "Decayed" : "Power points of Nexus that controls current location: " + n.getPowerPoints());
         }
 
         return true;

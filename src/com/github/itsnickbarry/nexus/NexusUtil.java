@@ -137,8 +137,12 @@ public class NexusUtil {
         allNexus.removeAll(decayedNexus);
 
         xmax.addAll(allNexus);
+        xmax.removeAll(decayedNexus);
         xmin.addAll(allNexus);
+        xmin.removeAll(decayedNexus);
         zmax.addAll(allNexus);
+        zmax.removeAll(decayedNexus);
         zmin.addAll(allNexus);
+        zmin.removeAll(decayedNexus);
     }
 }
