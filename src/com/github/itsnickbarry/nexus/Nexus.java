@@ -102,10 +102,13 @@ public class Nexus {
     
     public void update() {
         //decayPoints() could potentially be run at a different time, but will be run here for now
+        // Commented out for now as it was causing problems
+        /*
         if (!this.decayPoints()){
             NexusUtil.allNexus.remove(this);
             return;
         }
+        */
         this.calculatePower();
         this.calculateSpread();
         this.calculateRadius();

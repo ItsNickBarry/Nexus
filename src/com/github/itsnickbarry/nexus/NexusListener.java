@@ -14,17 +14,21 @@ public class NexusListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
+        //long start = System.currentTimeMillis();
         Block b = e.getBlock();
         Player p = e.getPlayer();
         Nexus n = NexusUtil.determineBlockOwner(b);
-        if (n != null && !n.allowsPlayerBlockEdit(p)) {
-            p.sendMessage(String.format("Owned by %d", n.getId()));
-            e.setCancelled(true);
-            return;
+        if (n != null) {
+            if (!n.allowsPlayerBlockEdit(p)) {
+                e.setCancelled(true);
+                p.sendMessage(String.format("Cancelled, Owned by %d", n.getId()));
+            } else {
+                p.sendMessage(String.format("Success, Owned by %d", n.getId()));
+            }
         } else {
             p.sendMessage("Unowned");
         }
-        
+        //System.out.println(System.currentTimeMillis() - start);
         //if (block is a nexus && player has authorization(from the nexus, or from the nexus that controls the block) and Bukkit perms to destroy a nexus)
         //    destroy nexus
     }
