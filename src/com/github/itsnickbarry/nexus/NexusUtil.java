@@ -48,6 +48,14 @@ public class NexusUtil {
     static Set<Nexus> zmax = new TreeSet<Nexus>(new NexusComparator.ZMax()); // sorted by max z
     static Set<Nexus> zmin = new TreeSet<Nexus>(new NexusComparator.ZMin()); // sorted by min z
     
+    public static NexusOwner getNexusOwner(int id) {
+    	for (NexusOwner nexusOwner : nexusOwners) {
+    		if (nexusOwner.getId() == id)
+    			return nexusOwner;
+    	}
+    	return null;
+    }
+    
     public static void addNexusOwner(NexusOwner owner) {
     	nexusOwners.add(owner);
     }

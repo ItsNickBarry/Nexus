@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class Nexus {
 
     private final int id;
-    private NexusOwner owner;
+    private int ownerId;
     
     private final int x, y, z;
     private final UUID worldUID;
@@ -27,22 +27,26 @@ public class Nexus {
         this.lastDecayTime = System.currentTimeMillis();
         if (real) {
             this.id = NexusUtil.nexusCurrentId.incrementAndGet();
-            this.owner = owner;
+            this.ownerId = owner.getId();
             NexusUtil.refreshSets();
         } else {
             this.id = 0;
-            this.owner = null;
+            this.ownerId = 0;
             this.radius = 0;
         }
     }
-
+    
     public NexusOwner getOwner() {
-    	return this.owner;
+    	return NexusUtil.getNexusOwner(this.ownerId);
+    }
+
+    public int getOwnerId() {
+    	return this.ownerId;
     }
     
     // TODO Improve
     public void setOwner(NexusOwner owner) {
-    	this.owner = owner;
+    	this.ownerId = owner.getId();
     }
 
     public int getId() {
@@ -82,10 +86,10 @@ public class Nexus {
     }
     
     public boolean allowsPlayerBlockEdit(Player p) {
-        if (this.owner.equals(p))
+        if (this.getOwner().equals(p))
         	return true;
-        if (this.owner instanceof NexusGroup) {
-        	NexusGroup owningGroup = (NexusGroup) this.owner;
+        if (this.getOwner() instanceof NexusGroup) {
+        	NexusGroup owningGroup = (NexusGroup) this.getOwner();
         	if (owningGroup.getRole(p.getUniqueId()) != NexusGroup.Role.NONE)
         		return true;
         }
