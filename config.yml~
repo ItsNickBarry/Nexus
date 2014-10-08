@@ -14,7 +14,7 @@
 ######
 # It is recommended that only the half-life variables be changed.
 # The other variables are interdependent and may have adverse interactions if modified incorrectly.
-############
+############d
 
 ###
 # Power Points Half-Life: the half-life of a Nexus's power points.

@@ -25,9 +25,9 @@ public class NexusUtil {
     
     static double powerLevelFactor;
     static int powerPointsBase; //number of points granted to a new Nexus
-    static int powerPointsMin; //the number of points at which a Nexus is destroyed; 0 < minPowerPoints < basePowerPoints
-    static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
-    static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
+    static int powerPointsMin; //the number of points at which a Nexus is destroyed; 0 < powerPointsMin < powerPointsBase
+    static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadLevelFactor <= 1
+    static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadLevelVariability <= 1
     
     
     static boolean useSpheres;
