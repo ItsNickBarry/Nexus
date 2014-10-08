@@ -5,17 +5,16 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-
-public class NexusPlayer implements NexusOwner {
-    
-    //long lastSeen;
-
-    //List<Integer> memberships = new ArrayList<Integer>();
+public class NexusPlayer extends NexusOwner {
     
 	private final UUID playerUID;
 	
     public NexusPlayer(Player player) {
         this.playerUID = player.getUniqueId();
+    }
+    
+    public NexusPlayer(UUID playerUID) {
+    	this.playerUID = playerUID;
     }
     
     @Override
@@ -32,12 +31,13 @@ public class NexusPlayer implements NexusOwner {
     	return false;
     }
     
+    // How should the hashCode look like?
     @Override
     public int hashCode() {
     	return Objects.hash(this.playerUID);
     }
     
-    public UUID getUniqueId() {
+    public UUID getPlayerUID() {
     	return this.playerUID;
     }
 }

@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
-public class NexusGroup implements NexusOwner {
+public class NexusGroup extends NexusOwner {
 	
 	public enum Role {
 		
@@ -17,15 +17,16 @@ public class NexusGroup implements NexusOwner {
 		
 	}
 	
-	private final int id;
+	private String tag;
     
 	private Map<UUID, Role> members = new HashMap<UUID, Role>();
 	
 	// When the first Nexus is placed, it must be owned by a singular person
 	// That person can then form a Group
-    public NexusGroup(NexusPlayer owner) {
-        this.id = NexusUtil.groupCurrentId.incrementAndGet();
-        this.setOwner(owner.getUniqueId());
+    public NexusGroup(NexusPlayer owner, String tag) {
+        // TODO setTag method
+        this.tag = tag;
+        this.setOwner(owner.getPlayerUID());
     }
     
     @Override
@@ -34,18 +35,16 @@ public class NexusGroup implements NexusOwner {
     		return true;
     	if (object instanceof NexusGroup) {
     		NexusGroup nexusGroup = (NexusGroup) object;
-    		return (this.members == nexusGroup.members);
+    		// TODO How does this affect hashCode?
+    		return (this.getId() == nexusGroup.getId() || this.tag.equalsIgnoreCase(nexusGroup.tag));
     	}
     	return false;
     }
     
+    // How well does this work with HashSet?
     @Override
     public int hashCode() {
-    	return Objects.hash(this.members);
-    }
-    
-    public int getId() {
-    	return this.id;
+    	return Objects.hash(this.getId());
     }
     
     public Role getRole(UUID playerUniqueId) {
