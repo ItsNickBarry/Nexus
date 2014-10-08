@@ -101,22 +101,6 @@ public class NexusUtil {
         return bestNexus;
     }
     
-//    public static Nexus determineBlockOwner2(Block block){
-//
-//        double bestPower = minPower;
-//        Nexus bestNexus = null;
-//
-//        for (Nexus n : allNexus) {
-//            double power = n.powerAt(block);
-//            if (power > bestPower) {
-//                bestPower = power;
-//                bestNexus = n;
-//            }
-//        }
-//
-//        return bestNexus;
-//    }
-    
     public static void loadConfig() {
         FileConfiguration config = Bukkit.getPluginManager().getPlugin("Nexus").getConfig();
         powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 8.64e7);
