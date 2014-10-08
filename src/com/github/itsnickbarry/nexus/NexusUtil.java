@@ -17,7 +17,11 @@ public class NexusUtil {
     /*
      * Configuration information
      */
-    static int influenceMin; //it's probably best if this is not configurable
+    //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
+    static long powerPointsHalfLife;
+    static long spreadPointsHalfLife; 
+    
+    static double influenceMin; //not currently configurable; I don't know what happens when it's changed
     
     static double powerLevelFactor;
     static int powerPointsBase; //number of points granted to a new Nexus
@@ -25,9 +29,6 @@ public class NexusUtil {
     static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadModificationFactor <= 1
     static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadVariability <= 1
     
-    //half-life, in days, of power and spread points; must be > 0 (or we can let 0 mean no decay)
-    static long powerPointsHalfLife;
-    static long spreadPointsHalfLife; 
     
     static boolean useSpheres;
     /*
@@ -110,14 +111,13 @@ public class NexusUtil {
     
     public static void loadConfig() {
         FileConfiguration config = Bukkit.getPluginManager().getPlugin("Nexus").getConfig();
-        influenceMin = config.getInt("influenceMin");
+        powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 8.64e7);
+        spreadPointsHalfLife = (long)(config.getDouble("spreadPointsHalfLife") * 8.64e7);
         powerLevelFactor = config.getDouble("powerLevelFactor");
         powerPointsBase = config.getInt("powerPointsBase");
         powerPointsMin = config.getInt("powerPointsMin");
         spreadLevelFactor = config.getDouble("spreadLevelFactor");
         spreadLevelVariability = config.getDouble("spreadLevelVariability");
-        powerPointsHalfLife = (long)(config.getDouble("powerPointsHalfLife") * 8.64e7);
-        spreadPointsHalfLife = (long)(config.getDouble("spreadPointsHalfLife") * 8.64e7);
         useSpheres = config.getBoolean("useSpheres");
         
         //TODO check that all values are within appropriate ranges and, if they're not, revert to defaults

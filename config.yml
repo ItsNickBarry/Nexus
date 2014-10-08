@@ -1,18 +1,81 @@
-influenceMin: 1
+#      ___           ___           ___           ___           ___     
+#     /\__\         /\  \         |\__\         /\__\         /\  \    
+#    /::|  |       /::\  \        |:|  |       /:/  /        /::\  \   
+#   /:|:|  |      /:/\:\  \       |:|  |      /:/  /        /:/\:\  \  
+#  /:/|:|  |__   /::\~\:\  \      |:|__|__   /:/  /  ___   _\:\~\:\  \ 
+# /:/ |:| /\__\ /:/\:\ \:\__\ ____/::::\__\ /:/__/  /\__\ /\ \:\ \:\__\
+# \/__|:|/:/  / \:\~\:\ \/__/ \::::/~~/~    \:\  \ /:/  / \:\ \:\ \/__/
+#     |:/:/  /   \:\ \:\__\    ~~|:|~~|      \:\  /:/  /   \:\ \:\__\  
+#     |::/  /     \:\ \/__/      |:|  |       \:\/:/  /     \:\/:/  /  
+#     /:/  /       \:\__\        |:|  |        \::/  /       \::/  /   
+#     \/__/         \/__/         \|__|         \/__/         \/__/    
+###########
+# Welcome to the configuration file of the Nexus plugin !
+######
+# It is recommended that only the half-life variables be changed.
+# The other variables are interdependent and may have adverse interactions if modified incorrectly.
+############
 
+###
+# Set the half-life of a Nexus's power points.
+###
+# double (decimal): -infinity < powerPointsHalfLife < infinity
+# Values greater than 0 indicate the amount of time, in days, that must pass for the number of each Nexus's power points to halve.
+# Values less than 0 indicate the amount of time, in days, that must pass for the number of each Nexus's power points to double.
+# Values of 0 indicate that the number of each Nexus's power points will remain constant over time.
+# default: 10, recommended: 5-100
+powerPointsHalfLife: -.005
+
+###
+# Set the half-life of a Nexus's spread points.
+###
+# double (decimal): -infinity < spreadPointsHalfLife < infinity
+# Values greater than 0 indicate the amount of time, in days, that must pass for the number of each Nexus's spread points to halve.
+# Values less than 0 indicate the amount of time, in days, that must pass for the number of each Nexus's spread points to double.
+# A value of 0 indicates that the number of each Nexus's spread points will remain constant over time.
+# default: 20, recommended: 5-100
+spreadPointsHalfLife: 20
+
+
+
+
+############
+# Technical Section !
+######
+# It is not recommended to edit the following variables without an understanding of the plugin source code.
+# Find the source code at https://github.com/ItsNickBarry/Nexus
+############
+
+###
+# 
+###
 powerLevelFactor: 100
 powerPointsBase: 100
 powerPointsMin: 75
 
 spreadLevelFactor: .01
+
+###
+# Set the total variability of a Nexus's spread, with respect to the normalized spread value, given an arbitrarily high or low number of spread points.
+###
+# double (decimal): 0 <= spreadLevelVariability <=1
+# A value of 1 indicates that a Nexus's spread will fluctuate by +/- up to 100%, depending on spread pointsl
+# A value of 0 indicates that spread points will have no effect on the spread of a Nexus.
+# default: 1, recommended: 0-1
 spreadLevelVariabliity: 1
 
-# Recommended to change half-life values when server needs balancing
-# A positive value indicates the amount of time, in days, for the number of points to halve
-# A negative value indicates the amount of time, int days, for the number of points to double
-# A value of 0 will cause the number of points to remain constant
-powerPointsHalfLife: -.005
-spreadPointsHalfLife: 20
-
+###
+# Set whether the area influenced by a Nexus is a sphere, rather than a cylinder.
+# Spherical regions have the same horizontal radius as cylindrical regions, but do not necessarily extend to the top or bottom of the world.  This allows unrestricted access, including placement of new Nexus, above and below some protected blocks.
+###
+# boolean: true or false
+# default: false, recommended: false
 useSpheres: false
 
+
+
+# definition
+# explanation
+# type: range
+# results of using certain values
+# default, recommended

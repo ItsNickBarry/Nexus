@@ -127,7 +127,7 @@ public class Nexus {
 
     private void calculateRadius() {
         //function is not continuous when power < spread; in this case, set radius to 0
-        this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log(((double)NexusUtil.influenceMin * (double)this.spread) / (double)this.power));
+        this.radius = this.power < this.spread ?  0 : (int) Math.sqrt(-2 * Math.pow((double)this.spread, 2) * Math.log((NexusUtil.influenceMin * (double)this.spread) / (double)this.power));
     }
     
     private void calculateSpread() {
