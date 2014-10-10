@@ -24,7 +24,7 @@
 # Values less than 0 determine the amount of time, in days, that it takes for the number of each Nexus's power points to double.
 # A value of 0 causes a Nexus's power points to remain constant with respect to time, unless modified by player actions.
 # default: 10, recommended: 5-100
-powerPointsHalfLife: -.005
+powerPointsHalfLife: 10
 
 ###
 # Spread Points Half-Life: the half-life of a Nexus's spread points.

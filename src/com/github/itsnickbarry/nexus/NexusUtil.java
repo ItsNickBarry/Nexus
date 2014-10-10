@@ -21,7 +21,7 @@ public class NexusUtil {
     static long powerPointsHalfLife;
     static long spreadPointsHalfLife; 
     
-    static double influenceMin; //not currently configurable; I don't know what happens when it's changed
+    static double influenceMin = 1; //not currently configurable; I don't know what happens when it's changed
     
     static double powerLevelFactor;
     static int powerPointsBase; //number of points granted to a new Nexus
