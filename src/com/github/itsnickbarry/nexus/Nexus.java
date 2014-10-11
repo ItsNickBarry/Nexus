@@ -18,7 +18,7 @@ public class Nexus {
     private double powerPoints, spreadPoints;
     private long lastDecayTime;
 
-    public Nexus(Block block, NexusOwner owner, boolean real) {
+    public Nexus(Block block, Player owner, boolean real) {
         this.x = block.getX();
         this.y = block.getY();
         this.z = block.getZ();
@@ -27,7 +27,7 @@ public class Nexus {
         this.lastDecayTime = System.currentTimeMillis();
         if (real) {
             this.id = NexusUtil.nexusCurrentId.incrementAndGet();
-            this.ownerId = owner.getId();
+            this.setOwner(owner);
             NexusUtil.refreshSets();
         } else {
             this.id = 0;
@@ -36,7 +36,7 @@ public class Nexus {
         }
     }
     
-    public NexusOwner getOwner() {
+    public Object getOwner() {
     	return NexusUtil.getNexusOwner(this.ownerId);
     }
 
@@ -45,8 +45,15 @@ public class Nexus {
     }
     
     // TODO Improve
-    public void setOwner(NexusOwner owner) {
-    	this.ownerId = owner.getId();
+    public void setOwner(Object owner) {
+        if (owner == null) {
+            this.ownerId = 0;
+        } else if (owner instanceof Player) {
+            this.ownerId = NexusUtil.absoluteGetPlayerId(((Player) owner).getUniqueId());
+        } else if (owner instanceof NexusGroup) {
+            
+        }
+    	//this.ownerId = owner.getId();
     }
 
     public int getId() {
@@ -86,7 +93,7 @@ public class Nexus {
     }
     
     public boolean allowsPlayerBlockEdit(Player p) {
-        if (this.getOwner().equals(p))
+        if (this.getOwner().equals(p.getUniqueId()))
         	return true;
         if (this.getOwner() instanceof NexusGroup) {
         	NexusGroup owningGroup = (NexusGroup) this.getOwner();

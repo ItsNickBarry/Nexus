@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public class NexusGroup extends NexusOwner {
+import org.bukkit.entity.Player;
+
+public class NexusGroup {
 	
 	public enum Role {
 		
@@ -23,10 +25,10 @@ public class NexusGroup extends NexusOwner {
 	
 	// When the first Nexus is placed, it must be owned by a singular person
 	// That person can then form a Group
-    public NexusGroup(NexusPlayer owner, String tag) {
+    public NexusGroup(Player owner, String tag) {
         // TODO setTag method
         this.tag = tag;
-        this.setOwner(owner.getPlayerUID());
+        this.setOwner(owner.getUniqueId());
     }
     
     @Override
@@ -36,7 +38,7 @@ public class NexusGroup extends NexusOwner {
     	if (object instanceof NexusGroup) {
     		NexusGroup nexusGroup = (NexusGroup) object;
     		// TODO How does this affect hashCode?
-    		return (this.getId() == nexusGroup.getId() || this.tag.equalsIgnoreCase(nexusGroup.tag));
+    		return (this.tag.equalsIgnoreCase(nexusGroup.tag));
     	}
     	return false;
     }
@@ -44,7 +46,7 @@ public class NexusGroup extends NexusOwner {
     // How well does this work with HashSet?
     @Override
     public int hashCode() {
-    	return Objects.hash(this.getId());
+    	return Objects.hash(this.tag);
     }
     
     public Role getRole(UUID playerUniqueId) {

@@ -52,12 +52,16 @@ public class NexusListener implements Listener {
         //nexus creation
         ItemStack inHand = e.getItemInHand();
         if (inHand != null && inHand.getItemMeta() != null && inHand.getItemMeta().getDisplayName() != null && inHand.getItemMeta().getDisplayName().equalsIgnoreCase("Nexus")) {
+            //NexusPlayer nexusPlayer = NexusUtil.absoluteGetNexusPlayer(p.getUniqueId());
+            /*
             NexusPlayer nexusPlayer = NexusUtil.getNexusPlayer(e.getPlayer().getUniqueId());
             if (nexusPlayer == null) {
+                //System.out.println("nexusPlayer == null");
             	nexusPlayer = new NexusPlayer(e.getPlayer());
             	NexusUtil.addNexusOwner(nexusPlayer);
             }
-        	Nexus newNexus = new Nexus(b, nexusPlayer, true);
+            */
+        	Nexus newNexus = new Nexus(b, p, true);
             NexusUtil.addNexus(newNexus);
             e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }

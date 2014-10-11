@@ -1,8 +1,10 @@
 package com.github.itsnickbarry.nexus;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -37,9 +39,11 @@ public class NexusUtil {
 
     
     static AtomicInteger nexusCurrentId = new AtomicInteger();
-    static AtomicInteger groupCurrentId = new AtomicInteger();
+    static AtomicInteger ownerCurrentId = new AtomicInteger();
 
-    static Set<NexusOwner> nexusOwners = new HashSet<NexusOwner>();
+    static Map<Integer, Object> nexusOwners = new HashMap<Integer, Object>();
+    
+    //static Set<NexusOwner> nexusOwners = new HashSet<NexusOwner>();
     
     static List<Nexus> allNexus = new ArrayList<Nexus>(); // we might not even need this list; just use one of the sets
 
@@ -48,6 +52,26 @@ public class NexusUtil {
     static Set<Nexus> zmax = new TreeSet<Nexus>(new NexusComparator.ZMax()); // sorted by max z
     static Set<Nexus> zmin = new TreeSet<Nexus>(new NexusComparator.ZMin()); // sorted by min z
     
+    // Is instanceof UUID or instanceof NexusGroup
+    public static Object getNexusOwner(int id) {
+        return nexusOwners.get(id);
+    }
+    
+    public static int absoluteGetPlayerId(UUID playerUID) {
+        Set<Entry<Integer, Object>> entries = nexusOwners.entrySet();
+        for (Entry<Integer, Object> entry : entries) {
+            if (entry.getValue().equals(playerUID)) {
+                System.out.println("Player already registered");
+                return entry.getKey();
+            }
+        }
+        System.out.println("Player now registered");
+        int id = ownerCurrentId.incrementAndGet();
+        nexusOwners.put(id, playerUID);
+        return id;
+    }
+    
+    /*
     public static NexusOwner getNexusOwner(int id) {
     	for (NexusOwner nexusOwner : nexusOwners) {
     		if (nexusOwner.getId() == id)
@@ -60,6 +84,23 @@ public class NexusUtil {
     	nexusOwners.add(owner);
     }
     
+    public static NexusPlayer absoluteGetNexusPlayer(UUID playerUID) {
+        if (nexusOwners.contains(playerUID)) {
+            for (NexusOwner nexusOwner : nexusOwners) {
+                if (nexusOwner.equals(playerUID)) {
+                    System.out.println("Returned pre-existing nexusOwner");
+                    return (NexusPlayer) nexusOwner;
+                }
+            }
+            return null;
+        } else {
+            NexusPlayer newNexusPlayer = new NexusPlayer(playerUID);
+            nexusOwners.add(newNexusPlayer);
+            System.out.println("Returned new nexusOwner");
+            return newNexusPlayer;
+        }
+    }
+    
     public static NexusPlayer getNexusPlayer(UUID playerUID) {
     	for (NexusOwner nexusOwner : nexusOwners) {
     		if (nexusOwner.equals(playerUID))
@@ -67,6 +108,7 @@ public class NexusUtil {
     	}
     	return null;
     }
+    */
     
     public static void addNexus(Nexus nexus) {
         allNexus.add(nexus);
