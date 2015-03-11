@@ -23,6 +23,9 @@ public class NexusGroup {
     
 	private Map<UUID, Role> members = new HashMap<UUID, Role>();
 	
+	private Set<NexusGroup> memberGroups = new HashSet<NexusGroup>();
+	//private Set<Integer> memberGroups = new HashSet<Integer>();
+	
 	// When the first Nexus is placed, it must be owned by a singular person
 	// That person can then form a Group
     public NexusGroup(Player owner, String tag) {
@@ -31,6 +34,32 @@ public class NexusGroup {
         this.setOwner(owner.getUniqueId());
     }
     
+    public String getTag() {
+        return this.tag;
+    }
+    
+    public Set<NexusGroup> getMemberGroups() {
+        return memberGroups;
+    }
+    /*
+    public Set<NexusGroup> getMemberGroups() {
+        Set<NexusGroup> matches = new HashSet<NexusGroup>();
+        for (int memberGroupId : memberGroups) {
+            matches.add((NexusGroup) NexusUtil.getNexusOwner(memberGroupId));
+        }
+        return matches;
+    }
+    */
+    
+    public void addMemberGroup(NexusGroup group) {
+        memberGroups.add(group);
+    }
+    
+    public void removeMemberGroup(NexusGroup group) {
+        memberGroups.remove(group);
+    }
+    
+    /*
     @Override
     public boolean equals(Object object) {
     	if (this == object)
@@ -38,7 +67,7 @@ public class NexusGroup {
     	if (object instanceof NexusGroup) {
     		NexusGroup nexusGroup = (NexusGroup) object;
     		// TODO How does this affect hashCode?
-    		return (this.tag.equalsIgnoreCase(nexusGroup.tag));
+    		return (this.getId() == nexusGroup.getId());
     	}
     	return false;
     }
@@ -46,13 +75,19 @@ public class NexusGroup {
     // How well does this work with HashSet?
     @Override
     public int hashCode() {
-    	return Objects.hash(this.tag);
+    	return Objects.hash(this.getId());
     }
+    */
     
     public Role getRole(UUID playerUniqueId) {
     	if (this.members.containsKey(playerUniqueId)) {
     		return this.members.get(playerUniqueId);
     	} else {
+    	    for (NexusGroup group : this.getMemberGroups()) {
+    	        if (group.getRole(playerUniqueId) != Role.NONE) {
+    	            return group.getRole(playerUniqueId);
+    	        }
+    	    }
     		return Role.NONE;
     	}
     }
@@ -128,4 +163,5 @@ public class NexusGroup {
     	}
     	this.members.put(newRegularUserUID, Role.REG_USER);
     }
+    
 }

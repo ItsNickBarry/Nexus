@@ -2,6 +2,7 @@ package com.github.itsnickbarry.nexus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -55,6 +56,20 @@ public class NexusUtil {
     // Is instanceof UUID or instanceof NexusGroup
     public static Object getNexusOwner(int id) {
         return nexusOwners.get(id);
+    }
+    
+    public static void addNexusGroup(NexusGroup group) {
+        nexusOwners.put(ownerCurrentId.incrementAndGet(), group);
+    }
+    
+    public static Set<NexusGroup> getNexusGroups() {
+        Set<NexusGroup> matches = new HashSet<NexusGroup>();
+        for (Object object :nexusOwners.values()) {
+            if (object instanceof NexusGroup) {
+                matches.add((NexusGroup) object);
+            }
+        }
+        return matches;
     }
     
     public static int absoluteGetPlayerId(UUID playerUID) {
