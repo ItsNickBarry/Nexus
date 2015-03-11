@@ -3,6 +3,7 @@ package com.github.itsnickbarry.nexus;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,6 +32,7 @@ public class NexusUtil {
     static int powerPointsMin; //the number of points at which a Nexus is destroyed; 0 < powerPointsMin < powerPointsBase
     static double spreadLevelFactor; //how effective spreadPoints are as spreadPoints approaches 0; 0 <= spreadLevelFactor <= 1
     static double spreadLevelVariability; //this represents the possible deviation from normalizedSpread; 0 <= spreadLevelVariability <= 1
+    static int maxRadius = 200;
     
     
     static boolean useSpheres;
@@ -52,6 +54,9 @@ public class NexusUtil {
     static Set<Nexus> xmin = new TreeSet<Nexus>(new NexusComparator.XMin()); // sorted by min x
     static Set<Nexus> zmax = new TreeSet<Nexus>(new NexusComparator.ZMax()); // sorted by max z
     static Set<Nexus> zmin = new TreeSet<Nexus>(new NexusComparator.ZMin()); // sorted by min z
+    
+    static Map<SimpleXYZ, Nexus> nexusByXYZ = new HashMap<SimpleXYZ, Nexus>();
+    static Map<SimpleXZ, Set<Nexus>> nexusByChunk = new HashMap<SimpleXZ, Set<Nexus>>();
     
     // Is instanceof UUID or instanceof NexusGroup
     public static Object getNexusOwner(int id) {
@@ -124,6 +129,49 @@ public class NexusUtil {
     	return null;
     }
     */
+    
+    public static void addNexus2(Nexus nexus) {
+        nexusByXYZ.put(nexus.getXYZ(), nexus);
+        Set<Nexus> nexusInChunk = nexusByChunk.get(nexus.getChunkCoordinates());
+        if (nexusInChunk != null) {
+            nexusInChunk.add(nexus);
+        } else {
+            Set<Nexus> mappedSet = new LinkedHashSet<Nexus>();
+            mappedSet.add(nexus);
+            nexusByChunk.put(nexus.getChunkCoordinates(), mappedSet);
+        }
+        refreshSets2();
+    }
+    
+    public static Nexus determineBlockOwner2(Block block) {
+        //long start = System.currentTimeMillis();
+        SimpleXZ blockChunk = new SimpleXZ(block.getChunk());
+        int chunkRadius = (int) Math.ceil(maxRadius / 16);
+        Set<Nexus> possibleAffected = new LinkedHashSet<Nexus>();
+        for (int i = -chunkRadius; i <= chunkRadius; i ++) {
+            for (int j = -chunkRadius; j <= chunkRadius; j ++) {
+                SimpleXZ current = new SimpleXZ(blockChunk.getX() + i, blockChunk.getZ() + j);
+                if (nexusByChunk.containsKey(current))
+                    possibleAffected.addAll(nexusByChunk.get(current));
+            }
+        }
+        double highestInfluence = influenceMin;
+        Nexus strongestNexus = null;
+        for (Nexus n : possibleAffected) {
+            double influence = n.influenceAt(block);
+            if (influence > highestInfluence) {
+                highestInfluence = influence;
+                strongestNexus = n;
+            }
+        }
+        //System.out.println("Search: " + (System.currentTimeMillis() - start));
+        return strongestNexus;
+    }
+    
+    public static void refreshSets2() {
+        for (Nexus n : nexusByXYZ.values())
+            n.update();
+    }
     
     public static void addNexus(Nexus nexus) {
         allNexus.add(nexus);

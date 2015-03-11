@@ -17,7 +17,7 @@ public class NexusListener implements Listener {
         //long start = System.currentTimeMillis();
         Block b = e.getBlock();
         Player p = e.getPlayer();
-        Nexus n = NexusUtil.determineBlockOwner(b);
+        Nexus n = NexusUtil.determineBlockOwner2(b);
         if (n != null) {
             if (!n.allowsPlayerBlockEdit(p)) {
                 e.setCancelled(true);
@@ -37,7 +37,7 @@ public class NexusListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent e) {
         Block b = e.getBlock();
         Player p = e.getPlayer();
-        Nexus n = NexusUtil.determineBlockOwner(b);
+        Nexus n = NexusUtil.determineBlockOwner2(b);
         if (n != null) {
             if (!n.allowsPlayerBlockEdit(p)) {
                 e.setCancelled(true);
@@ -62,7 +62,7 @@ public class NexusListener implements Listener {
             }
             */
         	Nexus newNexus = new Nexus(b, p, true);
-            NexusUtil.addNexus(newNexus);
+            NexusUtil.addNexus2(newNexus);
             e.getPlayer().sendMessage("Added Nexus " + newNexus.getId());
         }
     }
@@ -71,13 +71,15 @@ public class NexusListener implements Listener {
     public void onExplosion(EntityExplodeEvent e) {
         long start = System.currentTimeMillis();
         for (Block block : e.blockList()) {
-            Nexus owner = NexusUtil.determineBlockOwner(block);
+            Nexus owner = NexusUtil.determineBlockOwner2(block);
             
+            /*
             if (owner != null) {
                System.out.println(String.format("Exploded block owned by %d", owner.getId()));
             } else {
                 System.out.println("Exploded block unowned");
             }
+            */
             
         }
         System.out.println(String.format("Explosion took %d ms", System.currentTimeMillis() - start));

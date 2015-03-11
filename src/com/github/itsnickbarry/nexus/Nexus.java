@@ -10,7 +10,9 @@ public class Nexus {
     private final int id;
     private int ownerId;
     
-    private final int x, y, z;
+    //private final int x, y, z;
+    private final SimpleXYZ xyz;
+    private final SimpleXZ chunkCoordinates;
     private final UUID worldUID;
     
     private int power, spread, radius; // These values need to be stored here and updated regularly
@@ -19,9 +21,11 @@ public class Nexus {
     private long lastDecayTime;
 
     public Nexus(Block block, Player owner, boolean real) {
-        this.x = block.getX();
-        this.y = block.getY();
-        this.z = block.getZ();
+        //this.x = block.getX();
+        //this.y = block.getY();
+        //this.z = block.getZ();
+        this.xyz = new SimpleXYZ(block);
+        this.chunkCoordinates = new SimpleXZ(block.getChunk());
         this.worldUID = block.getWorld().getUID();
         this.powerPoints = NexusUtil.powerPointsBase;
         this.lastDecayTime = System.currentTimeMillis();
@@ -77,15 +81,23 @@ public class Nexus {
     }
 
     public int getX() {
-        return this.x;
+        return this.xyz.getX();
     }
 
     public int getY() {
-        return this.y;
+        return this.xyz.getY();
     }
 
     public int getZ() {
-        return this.z;
+        return this.xyz.getZ();
+    }
+    
+    public SimpleXYZ getXYZ() {
+        return this.xyz;
+    }
+    
+    public SimpleXZ getChunkCoordinates() {
+        return this.chunkCoordinates;
     }
     
     public UUID getWorldUID() {
@@ -106,7 +118,7 @@ public class Nexus {
     public double influenceAt(Block block) {
         //function is not continuous when spread == 0; in this case, return 0 (the only situation in which spread == 0 should be when power == 0)
         int x = block.getX();
-        int y = (NexusUtil.useSpheres ? block.getY() : this.y);
+        int y = (NexusUtil.useSpheres ? block.getY() : this.getY());
         int z = block.getZ();
         double distance = Math.sqrt(Math.pow(x - this.getX(), 2) + Math.pow(y - this.getY(), 2) + Math.pow(z - this.getZ(), 2));
         return this.spread == 0 ? 0 :
